@@ -3228,8 +3228,8 @@ source-map@^0.5.3, source-map@^0.5.6, source-map@^0.5.7:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
 
 spain-phone@^1.1.0:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/spain-phone/-/spain-phone-1.2.1.tgz#cb4418e8c74cae971c26f94f48644a9a33cdced6"
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/spain-phone/-/spain-phone-1.4.0.tgz#e1d30d5ce72cf8da80e0cf69a603cd2499ce169e"
 
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"

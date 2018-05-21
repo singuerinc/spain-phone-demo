@@ -6,10 +6,11 @@ import {
   isLowCost,
   isMobile,
   isOther,
-  stateByNumber
+  statesByNumber
 } from 'spain-phone';
+import { Check } from './Check';
 
-const className = v => (v ? 'o-100' : 'o-20');
+const onlyNumbers = v => (v.match(/\d+/gi) || []).pop() || '';
 
 class App extends React.Component {
   state = {
@@ -22,45 +23,52 @@ class App extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({ value: event.target.value });
+    const value: string = onlyNumbers(event.target.value);
+    this.setState({ value });
   }
 
   render() {
     const { value } = this.state;
-    const classIsFixed = className(isFixed(value));
-    const classIsMobile = className(isMobile(value));
-    const classIsFreeClass = className(isFreeCall(value));
-    const classIsLowCost = className(isLowCost(value));
-    const classIsHighCost = className(isHighCost(value));
-    const classIsOther = className(isOther(value));
+    const isFixedVal = isFixed(value);
+    const isMobileVal = isMobile(value);
+    const isFreeCallVal = isFreeCall(value);
+    const isLowCostVal = isLowCost(value);
+    const isHighCostVal = isHighCost(value);
+    const isOtherVal = isOther(value);
 
-    const states = stateByNumber(value);
+    const states = statesByNumber(value).join(' or ');
 
     return (
-      <form className="pa4 black-80">
-        <div className="">
-          <label className="f6 b db mb2">
-            Phone <span className="normal black-60">(mandatory)</span>
-          </label>
+      <form className="black-80">
+        <div>
           <input
-            className="input-reset ba b--black-20 pa2 mb2 db w-100"
+            className="input-reset f2 f1-ns ba b--black-10 pa2 mb2 db w-100"
             type="text"
-            placeholder="XXX XX XX XX"
+            placeholder="XXXXXXXXX"
             value={value}
             onChange={this.handleChange}
-            maxlength="9"
+            maxLength="9"
           />
-          <small className="f6 black-60 db mb2">Only Spanish phone numbers are allowed.</small>
         </div>
-        <ul className="list pl0 ml0 ba b--light-silver br2">
-          <li className={`ph3 pv3 bb b--light-silver ${classIsFixed}`}>Fixed</li>
-          <li className={`ph3 pv3 bb b--light-silver ${classIsMobile}`}>Mobile</li>
-          <li className={`ph3 pv3 bb b--light-silver ${classIsFreeClass}`}>Free call</li>
-          <li className={`ph3 pv3 bb b--light-silver ${classIsLowCost}`}>Low cost</li>
-          <li className={`ph3 pv3 bb b--light-silver ${classIsHighCost}`}>Hight cost</li>
-          <li className={`ph3 pv3 bb b--light-silver ${classIsOther}`}>Other</li>
-          <li className={`ph3 pv3 bb b--light-silver`}>States: {states.join(', ')}</li>
-        </ul>
+        <div className="f5 black-30 mv4">
+          Examples: 920211264, 915913856, 901365024, 934587860, 950236855, 956511933
+        </div>
+        <div className="f2 f4 mv4">
+          Probably located in{' '}
+          <span className={states ? '' : 'black-20'}>{states || '(waiting for input)'}</span>
+        </div>
+        <div className="flex flex-wrap mv4 bb b--black-20 pb4">
+          <div className="w-100 w-50-ns">
+            <Check label="Fixed" check={isFixedVal} />
+            <Check label="Mobile" check={isMobileVal} />
+            <Check label="Other" check={isOtherVal} />
+          </div>
+          <div className="w-100 w-50-ns">
+            <Check label="Free call" check={isFreeCallVal} />
+            <Check label="Low Cost" check={isLowCostVal} />
+            <Check label="High cost" check={isHighCostVal} />
+          </div>
+        </div>
       </form>
     );
   }
