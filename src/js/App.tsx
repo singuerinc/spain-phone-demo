@@ -1,13 +1,15 @@
 import * as React from 'react';
 import {
-  isPhone,
   isFixed,
-  isMobile,
   isFreeCall,
-  isLowCost,
   isHighCost,
-  isOther
+  isLowCost,
+  isMobile,
+  isOther,
+  stateByNumber
 } from 'spain-phone';
+
+const className = v => (v ? 'o-100' : 'o-20');
 
 class App extends React.Component {
   state = {
@@ -25,13 +27,14 @@ class App extends React.Component {
 
   render() {
     const { value } = this.state;
-    const className = v => (v ? 'o-100' : 'o-20');
     const classIsFixed = className(isFixed(value));
     const classIsMobile = className(isMobile(value));
     const classIsFreeClass = className(isFreeCall(value));
     const classIsLowCost = className(isLowCost(value));
     const classIsHighCost = className(isHighCost(value));
     const classIsOther = className(isOther(value));
+
+    const states = stateByNumber(value);
 
     return (
       <form className="pa4 black-80">
@@ -45,6 +48,7 @@ class App extends React.Component {
             placeholder="XXX XX XX XX"
             value={value}
             onChange={this.handleChange}
+            maxlength="9"
           />
           <small className="f6 black-60 db mb2">Only Spanish phone numbers are allowed.</small>
         </div>
@@ -55,6 +59,7 @@ class App extends React.Component {
           <li className={`ph3 pv3 bb b--light-silver ${classIsLowCost}`}>Low cost</li>
           <li className={`ph3 pv3 bb b--light-silver ${classIsHighCost}`}>Hight cost</li>
           <li className={`ph3 pv3 bb b--light-silver ${classIsOther}`}>Other</li>
+          <li className={`ph3 pv3 bb b--light-silver`}>States: {states.join(', ')}</li>
         </ul>
       </form>
     );
